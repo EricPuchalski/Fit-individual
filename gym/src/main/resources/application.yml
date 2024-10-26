@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fitpower_db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+
+  output:
+    ansi:
+      enabled: always # permite ver el log como colores
+server:
+  port: 8080
+logging:
+  level:
+    root: info # permite ver los logs de consola
+
+gym:
+  openapi:
+    url: "http://localhost:8080"
+    description: ".API for gym management"
+    contact:
+      name: "Puchalski Eric, Villalba Gonzalo, Pedrozo Facundo, Paniagua Santiago"
+      email: "Añadir emails de cada uno."
+      url: "https://github.com/PaniaguaSanty"
+    title: "Gym Managemen Apllication"
+    version: "1.0"
