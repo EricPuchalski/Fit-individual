@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class ClientController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ClientResponseDto> create(@Validated @RequestBody ClientRequestDto clientRequestDto) {
         logger.info("Creating a new client: {}", clientRequestDto);
         ClientResponseDto createdClient = clientService.create(clientRequestDto);
@@ -33,6 +35,7 @@ public class ClientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<ClientResponseDto>> findAll() {
         logger.info("Fetching all clients");
         List<ClientResponseDto> clients = clientService.findAll();
@@ -41,6 +44,7 @@ public class ClientController {
     }
 
     @GetMapping("/{dni}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ClientResponseDto> findByDni(@PathVariable String dni) {
         logger.info("Fetching client with DNI: {}", dni);
         ClientResponseDto client = clientService.findByDni(dni);
@@ -49,6 +53,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ClientResponseDto> update(@Valid @RequestBody ClientRequestDto clientRequestDto, @PathVariable Long id) {
         logger.info("Updating client with ID: {}", id);
         ClientResponseDto updatedClient = clientService.update(clientRequestDto, id);
@@ -57,6 +62,7 @@ public class ClientController {
     }
 
     @PutMapping("/disable/{dni}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> disable(@PathVariable String dni) {
         logger.info("Disabling client with DNI: {}", dni);
         clientService.disableClientByDni(dni);
@@ -65,6 +71,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{dni}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable String dni) {
         logger.info("Deleting client with DNI: {}", dni);
         clientService.delete(dni);

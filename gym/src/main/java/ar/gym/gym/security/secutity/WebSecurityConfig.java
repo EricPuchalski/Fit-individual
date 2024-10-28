@@ -13,12 +13,16 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableMethodSecurity //LO TUVE QUE UTILIZAR PARA QUE FUNCIONE BIEN EL @PREAUTHORIZE, SINO NO HACIA EL AUTH.
@@ -58,6 +62,19 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*"); // Permitir todas las solicitudes de origen
+        configuration.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, etc.)
+        configuration.addAllowedHeader("*"); // Permitir todas las cabeceras
+        configuration.setAllowCredentials(true); // Permitir credenciales
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth ->
@@ -70,26 +87,19 @@ public class WebSecurityConfig {
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .anyRequest().authenticated()
                 )
-
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/")
-                        .ignoringRequestMatchers("/auth/**")
-                        .ignoringRequestMatchers("/v3/api-docs/**")
-                        .ignoringRequestMatchers("/swagger-ui/**")
-                        .ignoringRequestMatchers("/swagger-ui.html"))
-
-
+                .csrf(CsrfConfigurer::disable) // Desactiva CSRF con el nuevo método recomendado
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
-                        ));
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
     }
+
+
+
 
 
 }
