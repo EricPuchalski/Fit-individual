@@ -5,8 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ff890f-4515-478b-9216-a36d2f21e1d7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/controller/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/controller/TestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/dto/request/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/dto/request/SignupRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/dto/response/JwtResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/dto/response/MessageResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/model/ERole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/model/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/repository/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/WebSecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/jwt/AuthEntryPointJwt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/jwt/AuthTokenFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/jwt/JwtUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/service/UserDetailsImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/security/secutity/service/UserDetailsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gym/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/config/CorsConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/model/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/model/UserWeb.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,16 +70,16 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "NutritionLogic",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Projects/workspace/FitPower_Individual/FitPowerPruebas-back/gym/src/main/java/ar/gym/gym/controller"
+    "last_opened_file_path": "C:/Users/ericp/OneDrive/Escritorio/fitpower-individual/Fit-individual/gym/src/main/java/ar/gym/gym"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ericp\OneDrive\Escritorio\fitpower-individual\Fit-individual\gym\src\main\java\ar\gym\gym" />
       <recent name="D:\Projects\workspace\FitPower_Individual\FitPowerPruebas-back\gym\src\main\java\ar\gym\gym\controller" />
       <recent name="D:\Projects\workspace\FitPower_Individual\FitPowerPruebas-back\gym\src\main\java\ar\gym\gym\dto\response" />
       <recent name="D:\Projects\workspace\FitPower_Individual\FitPowerPruebas-back\gym\src\main\java\ar\gym\gym\dto\request" />
       <recent name="D:\Projects\workspace\FitPower_Individual\FitPowerPruebas-back\gym\src\main\java\ar\gym\gym\service\impl" />
-      <recent name="D:\Projects\workspace\FitPower_Individual\FitPowerPruebas-back\gym\src\main\java\ar\gym\gym\service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ar.gym.gym.dto.response" />
