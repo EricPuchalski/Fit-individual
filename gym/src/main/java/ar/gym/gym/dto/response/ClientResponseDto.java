@@ -23,4 +23,6 @@ public class ClientResponseDto {
     private List<ClientStatus> statuses;
     private String goal;
     private String gymName;
+    private String dniTrainer;
+    private String dniNutritionist;
 }

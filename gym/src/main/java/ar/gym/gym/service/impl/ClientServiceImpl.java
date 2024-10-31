@@ -73,7 +73,21 @@ public class ClientServiceImpl implements ClientService {
 
         List<Client> clients = clientRepository.findAll();
         List<ClientResponseDto> response = clients.stream()
-                .map(clientMapper::entityToDto)
+                .map(client -> {
+                    ClientResponseDto dto = clientMapper.entityToDto(client);
+
+                    // Asignar el DNI del entrenador
+                    if (client.getTrainer() != null) {
+                        dto.setDniTrainer(client.getTrainer().getDni());
+                    }
+
+                    // Asignar el DNI del nutricionista
+                    if (client.getNutritionist() != null) {
+                        dto.setDniNutritionist(client.getNutritionist().getDni());
+                    }
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         logger.info("Saliendo del método findAll con número total de clientes encontrados: {}", response.size());
@@ -97,6 +111,16 @@ public class ClientServiceImpl implements ClientService {
         Client client = getClientByDniOrThrow(dni);
         ClientResponseDto response = clientMapper.entityToDto(client);
         response.setGymName(client.getGym().getName());
+
+        // Asignar el DNI del entrenador
+        if (client.getTrainer() != null) {
+            response.setDniTrainer(client.getTrainer().getDni());
+        }
+
+        // Asignar el DNI del nutricionista
+        if (client.getNutritionist() != null) {
+            response.setDniNutritionist(client.getNutritionist().getDni());
+        }
 
         logger.info("Saliendo del método findByDni con respuesta: {}", response);
         return response;
