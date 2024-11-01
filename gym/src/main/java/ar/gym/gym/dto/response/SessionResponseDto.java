@@ -1,6 +1,8 @@
 package ar.gym.gym.dto.response;
 
-import ar.gym.gym.model.*;
+import ar.gym.gym.model.Exercise;
+import ar.gym.gym.model.Routine;
+import ar.gym.gym.model.TrainingDiary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

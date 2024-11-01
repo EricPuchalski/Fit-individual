@@ -1,10 +1,13 @@
 package ar.gym.gym.dto.request;
 
 
+import ar.gym.gym.model.Exercise;
+import ar.gym.gym.model.Routine;
+import ar.gym.gym.model.TrainingDiary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ar.gym.gym.model.*;
+
 import java.time.LocalTime;
 
 @Data
