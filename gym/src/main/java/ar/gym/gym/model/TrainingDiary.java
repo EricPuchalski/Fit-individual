@@ -19,6 +19,4 @@ public class TrainingDiary {
     private LocalDateTime date;
     private String observation;
     private boolean completed;
-    @OneToMany(mappedBy = "trainingDiary")
-    private List<Session>exercisesPerformed;
 }

@@ -14,14 +14,9 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionRequestDto {
-    private String trainingDay;
-    private String muscleGroup;
     private int sets;
     private int reps;
     private LocalTime restTime;
-    private LocalTime duration;
     private boolean completed;
-    private Exercise exercise;
-    private Routine routine;
-    private TrainingDiary trainingDiary;
+    private String exerciseName;
 }

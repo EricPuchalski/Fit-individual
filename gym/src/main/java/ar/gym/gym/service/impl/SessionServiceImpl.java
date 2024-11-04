@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -53,12 +54,6 @@ public class SessionServiceImpl implements SessionService {
 
 
         // Actualizamos solo los campos no nulos o no vacíos del DTO
-        if (sessionRequestDto.getTrainingDay() != null && !sessionRequestDto.getTrainingDay().isEmpty()) {
-            sessionRequestDto.setTrainingDay(sessionRequestDto.getTrainingDay());
-        }
-        if (sessionRequestDto.getMuscleGroup() != null && !sessionRequestDto.getMuscleGroup().isEmpty()) {
-            sessionRequestDto.setMuscleGroup(sessionRequestDto.getMuscleGroup());
-        }
         if (sessionRequestDto.getSets() > 0) {
             sessionRequestDto.setSets(sessionRequestDto.getSets());
         }
@@ -68,10 +63,6 @@ public class SessionServiceImpl implements SessionService {
         if (sessionRequestDto.getRestTime() != null) {
             sessionRequestDto.setRestTime(sessionRequestDto.getRestTime());
         }
-        if (sessionRequestDto.getDuration() != null) {
-            sessionRequestDto.setDuration(sessionRequestDto.getDuration());
-        }
-
         // Actualizamos el estado de completitud de la sesión
         sessionRequestDto.setCompleted(sessionRequestDto.isCompleted());
 
@@ -88,24 +79,26 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.deleteById(id);
     }
 
-    @Transactional
-    public void addExerciseToSession(Long sessionId, Object exerciseIdentifier) {
+    @Override
+    public void addExerciseToSession(Long sessionId, String name) {
         // Buscar la sesión por su ID
         Session session = getSessionByCodeOrThrow(sessionId);
 
-        Exercise exercise;
+        Optional<Exercise> exercise;
 
-            exercise = exerciseServiceImpl.getExerciseByIdOrThrow((Long) exerciseIdentifier);
+            exercise = exerciseServiceImpl.findByName(name);
+        if (exercise.isPresent()){
+            // Asignar el ejercicio a la sesión
+            session.setExercise(exercise.get());
+
+            // Guardar la sesión actualizada en la base de datos
+            Session updatedSession = sessionRepository.save(session);
+
+            // Devolver la sesión actualizada en formato DTO (si es necesario)
+            sessionMapper.entityToDto(updatedSession);
+        }
 
 
-        // Asignar el ejercicio a la sesión
-        session.setExercise(exercise);
-
-        // Guardar la sesión actualizada en la base de datos
-        Session updatedSession = sessionRepository.save(session);
-
-        // Devolver la sesión actualizada en formato DTO (si es necesario)
-        sessionMapper.entityToDto(updatedSession);
     }
 
 

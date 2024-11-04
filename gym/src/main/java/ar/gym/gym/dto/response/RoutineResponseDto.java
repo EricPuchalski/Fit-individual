@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class RoutineResponseDto {
     private String name;
     private LocalDate creationDate;
     private boolean active;
+    private List<SessionResponseDto> sessions;
 }
