@@ -22,6 +22,8 @@ public interface ClientService{
 
 //    ClientResponseDto findByEmail(String email);
 
+    List<ClientResponseDto> getClientsByTrainerEmail(String trainerEmail);
+
 
 
 }

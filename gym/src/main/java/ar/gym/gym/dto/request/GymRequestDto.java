@@ -11,12 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GymRequestDto {
-    private String gymCode;
     private String name;
     private String phone;
     private String email;
     private String address;
-    private List<Client> clientList;
-    private List<Trainer>trainerList;
-    private List<Nutritionist>nutritionistList;
 }

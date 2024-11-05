@@ -2,6 +2,7 @@ package ar.gym.gym.controller;
 
 import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
+import ar.gym.gym.model.Client;
 import ar.gym.gym.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -78,4 +79,12 @@ public class ClientController {
         logger.info("Client with DNI {} has been deleted", dni);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/by-trainer/{email}")
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    public ResponseEntity<List<ClientResponseDto>> getClientsByTrainerEmail(@PathVariable String email) {
+        List<ClientResponseDto> clients = clientService.getClientsByTrainerEmail(email);
+        return ResponseEntity.ok(clients);
+    }
+
 }
