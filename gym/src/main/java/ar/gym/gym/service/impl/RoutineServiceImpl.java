@@ -114,6 +114,33 @@ public class RoutineServiceImpl implements RoutineService {
         return routineMapper.entityToDto(activeRoutine);
     }
 
+    @Override
+    public RoutineResponseDto completeRoutine(Long idRoutine) {
+        // 1. Buscar la rutina por su ID
+        Routine routine = routineRepository.findById(idRoutine)
+                .orElseThrow(() -> new EntityNotFoundException("Routine not found"));
+
+        // 2. Marcar la rutina como completada
+        routine.setCompleted(true);
+        routineRepository.save(routine);
+
+        // 3. Obtener el DNI del cliente asociado a la rutina
+        String clientDni = routine.getClient().getDni();
+
+        // 4. Verificar si todas las rutinas del cliente están completadas
+        List<Routine> clientRoutines = routineRepository.findAllByClientDni(clientDni);
+        boolean allCompleted = clientRoutines.stream().allMatch(Routine::isCompleted);
+
+        if (allCompleted) {
+            // 5. Si todas están completadas, restablecer el estado de todas las rutinas a no completado
+            clientRoutines.forEach(r -> r.setCompleted(false));
+            routineRepository.saveAll(clientRoutines);
+        }
+
+        // 6. Convertir la rutina actualizada a un DTO y devolverla
+        return routineMapper.entityToDto(routine);
+    }
+
 
 
 

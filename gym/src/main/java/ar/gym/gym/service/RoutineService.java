@@ -35,4 +35,7 @@ public interface RoutineService {
     List<RoutineResponseDto> getRoutinesByClientEmail(String clientEmail);
 
     RoutineResponseDto getActiveRoutineByEmail(String email);
+
+    RoutineResponseDto completeRoutine(Long idRoutine);
+
 }

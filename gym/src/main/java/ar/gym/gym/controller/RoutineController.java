@@ -32,6 +32,13 @@ public class RoutineController {
         return new ResponseEntity<>(createdRoutine, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}/complete")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<RoutineResponseDto> completeRoutine(@PathVariable Long id) {
+        RoutineResponseDto responseDto = routineService.completeRoutine(id);
+        return ResponseEntity.ok(responseDto);
+    }
+
     // Endpoint to activate a routine and set all others to inactive
     @PostMapping("/activate/{clientDni}/{routineId}")
     @PreAuthorize("hasRole('ROLE_CLIENT')")

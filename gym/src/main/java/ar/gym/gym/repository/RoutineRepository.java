@@ -13,4 +13,6 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     List<Routine> findByClientId(Long clientId);
 
     Optional<Routine> findByClientIdAndActiveTrue(Long id);
- }
+
+    List<Routine> findAllByClientDni(String clientDni);
+}
