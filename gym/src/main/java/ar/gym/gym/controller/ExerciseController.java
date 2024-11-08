@@ -35,6 +35,7 @@ public class ExerciseController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<ExerciseResponseDto>> findAll() {
         logger.info("Fetching all exercises");
         List<ExerciseResponseDto> exercises = exerciseService.findAll();
@@ -43,6 +44,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Exercise> findByName(@PathVariable String name) {
         logger.info("Fetching exercise with name: {}", name);
         Optional<Exercise> exercise = exerciseService.findByName(name);
@@ -56,6 +58,7 @@ public class ExerciseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ExerciseResponseDto> update(@RequestBody ExerciseRequestDto exerciseRequestDto, @PathVariable Long id) {
         logger.info("Updating exercise with ID: {}", id);
         ExerciseResponseDto updatedExercise = exerciseService.update(exerciseRequestDto, id);
@@ -64,6 +67,7 @@ public class ExerciseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         logger.info("Deleting exercise with ID: {}", id);
         exerciseService.delete(id);

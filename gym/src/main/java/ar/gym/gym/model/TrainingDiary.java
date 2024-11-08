@@ -19,4 +19,6 @@ public class TrainingDiary {
     private LocalDateTime date;
     private String observation;
     private boolean completed;
+    @OneToMany(mappedBy = "trainingDiary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Session> sessions;
 }

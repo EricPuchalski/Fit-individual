@@ -1,9 +1,7 @@
 package ar.gym.gym.controller;
 
-import ar.gym.gym.dto.request.RoutineRequestDto;
 import ar.gym.gym.dto.request.TrainerRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
-import ar.gym.gym.dto.response.RoutineResponseDto;
 import ar.gym.gym.dto.response.TrainerResponseDto;
 import ar.gym.gym.service.TrainerService;
 import jakarta.validation.Valid;
@@ -11,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +33,6 @@ public class TrainerController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<TrainerResponseDto>> findAll() {
         logger.info("Retrieving all trainers");
         List<TrainerResponseDto> trainers = trainerService.findAll();
@@ -76,13 +72,6 @@ public class TrainerController {
         return ResponseEntity.ok(trainerClients);
     }
 
-    @PostMapping("/routines")
-    public ResponseEntity<RoutineResponseDto> createRoutineForClient(@RequestBody RoutineRequestDto routineRequestDto) {
-        logger.info("Creating routine for client with request: {}", routineRequestDto);
-        RoutineResponseDto routineResponse = trainerService.createRoutine(routineRequestDto);
-        logger.info("Created routine: {}", routineResponse);
-        return ResponseEntity.status(HttpStatus.CREATED).body(routineResponse);
-    }
 
     //falta crear la funcion de plan nut
     //creamos rutina y agregamos a trainer

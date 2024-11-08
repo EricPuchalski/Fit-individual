@@ -26,5 +26,13 @@ public interface RoutineService {
 
     RoutineResponseDto editSessionInRoutine(Long routineId, SessionRequestDto sessionRequestDto);
 
+    void activateRoutine(String clientDni, Long routineId);
 
-    }
+    RoutineResponseDto getActiveRoutine(String clientDni);
+
+    List<RoutineResponseDto> getRoutinesByClientDni(String clientDni);
+
+    List<RoutineResponseDto> getRoutinesByClientEmail(String clientEmail);
+
+    RoutineResponseDto getActiveRoutineByEmail(String email);
+}

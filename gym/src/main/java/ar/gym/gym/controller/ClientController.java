@@ -2,7 +2,6 @@ package ar.gym.gym.controller;
 
 import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
-import ar.gym.gym.model.Client;
 import ar.gym.gym.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -53,6 +52,15 @@ public class ClientController {
         return ResponseEntity.ok(client);
     }
 
+    @GetMapping("/email/{email}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<ClientResponseDto> findByEmail(@PathVariable String email) {
+        logger.info("Fetching client with email: {}", email);
+        ClientResponseDto client = clientService.findByEmail(email);
+        logger.info("Client retrieved: {}", client);
+        return ResponseEntity.ok(client);
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ClientResponseDto> update(@Valid @RequestBody ClientRequestDto clientRequestDto, @PathVariable Long id) {
@@ -79,12 +87,4 @@ public class ClientController {
         logger.info("Client with DNI {} has been deleted", dni);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @GetMapping("/by-trainer/{email}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
-    public ResponseEntity<List<ClientResponseDto>> getClientsByTrainerEmail(@PathVariable String email) {
-        List<ClientResponseDto> clients = clientService.getClientsByTrainerEmail(email);
-        return ResponseEntity.ok(clients);
-    }
-
 }

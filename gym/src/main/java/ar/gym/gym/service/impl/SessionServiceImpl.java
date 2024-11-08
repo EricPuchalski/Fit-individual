@@ -8,7 +8,6 @@ import ar.gym.gym.model.Session;
 import ar.gym.gym.repository.SessionRepository;
 import ar.gym.gym.service.SessionService;
 import jakarta.persistence.EntityExistsException;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

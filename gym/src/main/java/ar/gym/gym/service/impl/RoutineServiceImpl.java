@@ -3,7 +3,6 @@ package ar.gym.gym.service.impl;
 import ar.gym.gym.dto.request.RoutineRequestDto;
 import ar.gym.gym.dto.request.SessionRequestDto;
 import ar.gym.gym.dto.response.RoutineResponseDto;
-import ar.gym.gym.dto.response.SessionResponseDto;
 import ar.gym.gym.mapper.RoutineMapper;
 import ar.gym.gym.model.Client;
 import ar.gym.gym.model.Exercise;
@@ -14,7 +13,6 @@ import ar.gym.gym.repository.ExerciseRepository;
 import ar.gym.gym.repository.RoutineRepository;
 import ar.gym.gym.repository.SessionRepository;
 import ar.gym.gym.service.RoutineService;
-import ar.gym.gym.service.SessionService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -46,33 +44,106 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineResponseDto create(RoutineRequestDto routineRequestDto) {
-        // Buscar el cliente por DNI
-        Optional<Client> client = clientRepository.findByDni(routineRequestDto.getClientDni());
+        Client client = clientRepository.findByDni(routineRequestDto.getClientDni())
+                .orElseThrow(() -> new IllegalArgumentException("Client not found"));
 
-        if (client.isPresent()) {
-            // Convertimos el request a entidad
-            Routine routine = routineMapper.dtoToEntity(routineRequestDto);
+        // Convert DTO to entity
+        Routine routine = routineMapper.dtoToEntity(routineRequestDto);
 
-            // Establecer la relación con el cliente
-            routine.setClient(client.get());
+        // Set active to false initially
+        routine.setActive(false);
 
-            routine.setActive(true);
-            routine.setCreationDate(LocalDate.now());
+        // Set the client to the routine
+        routine.setClient(client);
 
-            // Añadimos la rutina a la lista de rutinas del cliente
-            client.get().getRoutines().add(routine);
+        // Save the new routine
+        Routine newRoutine = routineRepository.save(routine);
 
-            // Guardamos la rutina en la base de datos (esto ahora debería funcionar)
-            routineRepository.save(routine);
+        // Return the new routine as DTO
+        return routineMapper.entityToDto(newRoutine);
+    }
 
-            // Devolvemos la rutina creada como DTO
-            return routineMapper.entityToDto(routine);
+    @Override
+    public void activateRoutine(String dni, Long routineId) {
+        // Fetch the client by ID
+        Client client = clientRepository.findByDni(dni)
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+
+        // Fetch the routines for the client
+        List<Routine> routines = routineRepository.findByClientId(client.getId());
+
+        // Set all routines to inactive
+        for (Routine r : routines) {
+            r.setActive(false);
+            routineRepository.save(r);
         }
 
-        throw new EntityNotFoundException("El cliente con el dni " + routineRequestDto.getClientDni() + " no existe");
+        // Activate the selected routine
+        Routine routineToActivate = routineRepository.findById(routineId)
+                .orElseThrow(() -> new EntityNotFoundException("Routine not found"));
+
+        routineToActivate.setActive(true);
+        routineRepository.save(routineToActivate);
+    }
+
+    // Method to find the active routine for a specific client
+    public RoutineResponseDto getActiveRoutine(String dni) {
+        Client client = clientRepository.findByDni(dni)
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+
+        // Find the active routine
+        Routine activeRoutine = routineRepository.findByClientIdAndActiveTrue(client.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Active routine not found"));
+
+        // Return the active routine as DTO
+        return routineMapper.entityToDto(activeRoutine);
     }
 
 
+    @Override
+    public RoutineResponseDto getActiveRoutineByEmail(String email) {
+        // Buscar el cliente por su email
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+
+        // Buscar la rutina activa del cliente
+        Routine activeRoutine = routineRepository.findByClientIdAndActiveTrue(client.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Active routine not found"));
+
+        // Convertir la rutina activa a DTO de respuesta y retornarla
+        return routineMapper.entityToDto(activeRoutine);
+    }
+
+
+
+
+    // Method to find all routines of a client by DNI
+    public List<RoutineResponseDto> getRoutinesByClientDni(String clientDni) {
+        Client client = clientRepository.findByDni(clientDni)
+                .orElseThrow(() -> new EntityNotFoundException("No existe un cliente con el dni: " + clientDni));
+
+        // Fetch all routines for the client
+        List<Routine> routines = routineRepository.findByClientId(client.getId());
+
+        // Return the list of routines as DTOs
+        return routines.stream()
+                .map(routineMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoutineResponseDto> getRoutinesByClientEmail(String clientEmail) {
+        Client client = clientRepository.findByEmail(clientEmail)
+                .orElseThrow(() -> new EntityNotFoundException("No existe un cliente con el email: " + clientEmail));
+
+        // Fetch all routines for the client
+        List<Routine> routines = routineRepository.findByClientId(client.getId());
+
+        // Return the list of routines as DTOs
+        return routines.stream()
+                .map(routineMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<RoutineResponseDto> findAll() {

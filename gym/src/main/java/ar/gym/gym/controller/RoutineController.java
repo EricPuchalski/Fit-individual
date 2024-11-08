@@ -24,29 +24,65 @@ public class RoutineController {
     }
 
 
-    @PostMapping
+    // Endpoint to create a new routine
+    @PostMapping()
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> createRoutine(@RequestBody RoutineRequestDto routineRequestDto) {
         RoutineResponseDto createdRoutine = routineService.create(routineRequestDto);
         return new ResponseEntity<>(createdRoutine, HttpStatus.CREATED);
     }
 
+    // Endpoint to activate a routine and set all others to inactive
+    @PostMapping("/activate/{clientDni}/{routineId}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<Void> activateRoutine(@PathVariable String clientDni, @PathVariable Long routineId) {
+        routineService.activateRoutine(clientDni, routineId);
+        return ResponseEntity.ok().build();
+    }
+
+    // Endpoint to get the active routine of a client
+    @GetMapping("/active/{clientDni}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<RoutineResponseDto> getActiveRoutine(@PathVariable String clientDni) {
+        RoutineResponseDto activeRoutine = routineService.getActiveRoutine(clientDni);
+        return ResponseEntity.ok(activeRoutine);
+    }
+    @GetMapping("/active/email/{email}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<RoutineResponseDto> getActiveRoutineByEmail(@PathVariable String email) {
+        RoutineResponseDto activeRoutine = routineService.getActiveRoutineByEmail(email);
+        return ResponseEntity.ok(activeRoutine);
+    }
+
+    // Endpoint to get all routines of a client by their DNI
+    @GetMapping("/client/{clientDni}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<List<RoutineResponseDto>> getRoutinesByClientDni(@PathVariable String clientDni) {
+        List<RoutineResponseDto> routines = routineService.getRoutinesByClientDni(clientDni);
+        return ResponseEntity.ok(routines);
+    }
+
+    @GetMapping("/client/email/{clientEmail}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<List<RoutineResponseDto>> getRoutinesByClientEmail(@PathVariable String clientEmail) {
+        List<RoutineResponseDto> routines = routineService.getRoutinesByClientEmail(clientEmail);
+        return ResponseEntity.ok(routines);
+    }
+
+
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<List<RoutineResponseDto>> getAllRoutines() {
         List<RoutineResponseDto> routines = routineService.findAll();
         return new ResponseEntity<>(routines, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> getRoutineById(@PathVariable Long id) {
         RoutineResponseDto routine = routineService.findById(id);
         return new ResponseEntity<>(routine, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable Long id,
                                                             @RequestBody RoutineRequestDto routineRequestDto) {
         RoutineResponseDto updatedRoutine = routineService.update(routineRequestDto, id);
@@ -54,21 +90,18 @@ public class RoutineController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<Void> deleteRoutine(@PathVariable Long id) {
         routineService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/{routineId}/sessions")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> addSessionToRoutine(@PathVariable Long routineId, @RequestBody SessionRequestDto sessionRequestDto) {
         RoutineResponseDto updatedRoutine = routineService.addSessionToRoutine(routineId, sessionRequestDto);
         return new ResponseEntity<>(updatedRoutine, HttpStatus.OK);
     }
 
     @DeleteMapping("/{routineId}/sessions/{sessionId}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> removeSessionFromRoutine(@PathVariable Long routineId,
                                                                        @PathVariable Long sessionId) {
         RoutineResponseDto updatedRoutine = routineService.removeSessionFromRoutine(routineId, sessionId);
@@ -76,7 +109,6 @@ public class RoutineController {
     }
 
     @PutMapping("/{routineId}/sessions")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> editSessionInRoutine(@PathVariable Long routineId,
                                                                    @RequestBody SessionRequestDto sessionRequestDto) {
         RoutineResponseDto updatedRoutine = routineService.editSessionInRoutine(routineId, sessionRequestDto);

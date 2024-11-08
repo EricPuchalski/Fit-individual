@@ -6,10 +6,8 @@ import ar.gym.gym.mapper.ClientMapper;
 import ar.gym.gym.mapper.GymMapper;
 import ar.gym.gym.model.Client;
 import ar.gym.gym.model.Gym;
-import ar.gym.gym.model.Trainer;
 import ar.gym.gym.repository.ClientRepository;
 import ar.gym.gym.repository.GymRepository;
-import ar.gym.gym.repository.TrainerRepository;
 import ar.gym.gym.service.ClientService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +26,12 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final GymRepository gymRepository;
     private final ClientMapper clientMapper;
-    private final TrainerRepository trainerRepository;
     private final GymMapper gymMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, TrainerRepository trainerRepository, GymMapper gymMapper) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, GymMapper gymMapper) {
         this.clientRepository = clientRepository;
         this.gymRepository = gymRepository;
         this.clientMapper = clientMapper;
-        this.trainerRepository = trainerRepository;
         this.gymMapper = gymMapper;
     }
 
@@ -78,21 +73,7 @@ public class ClientServiceImpl implements ClientService {
 
         List<Client> clients = clientRepository.findAll();
         List<ClientResponseDto> response = clients.stream()
-                .map(client -> {
-                    ClientResponseDto dto = clientMapper.entityToDto(client);
-
-                    // Asignar el DNI del entrenador
-                    if (client.getTrainer() != null) {
-                        dto.setDniTrainer(client.getTrainer().getDni());
-                    }
-
-                    // Asignar el DNI del nutricionista
-                    if (client.getNutritionist() != null) {
-                        dto.setDniNutritionist(client.getNutritionist().getDni());
-                    }
-
-                    return dto;
-                })
+                .map(clientMapper::entityToDto)
                 .collect(Collectors.toList());
 
         logger.info("Saliendo del método findAll con número total de clientes encontrados: {}", response.size());
@@ -117,17 +98,24 @@ public class ClientServiceImpl implements ClientService {
         ClientResponseDto response = clientMapper.entityToDto(client);
         response.setGymName(client.getGym().getName());
 
-        // Asignar el DNI del entrenador
-        if (client.getTrainer() != null) {
-            response.setDniTrainer(client.getTrainer().getDni());
-        }
-
-        // Asignar el DNI del nutricionista
-        if (client.getNutritionist() != null) {
-            response.setDniNutritionist(client.getNutritionist().getDni());
-        }
-
         logger.info("Saliendo del método findByDni con respuesta: {}", response);
+        return response;
+    }
+
+    @Override
+    public ClientResponseDto findByEmail(String email) {
+        logger.info("Entrando al método findByEmail con email: {}", email);
+
+        Optional<Client> client = clientRepository.findByEmail(email);
+        if (client.isEmpty()){
+            throw new EntityNotFoundException("El cliente con el email " + email + " no existe");
+        }
+        ClientResponseDto response = clientMapper.entityToDto(client.get());
+        if (client.get().getGym()!=null){
+            response.setGymName(client.get().getGym().getName());
+        }
+
+        logger.info("Saliendo del método findByEmail con respuesta: {}", response);
         return response;
     }
 
@@ -201,20 +189,4 @@ public class ClientServiceImpl implements ClientService {
         logger.info("Saliendo del método disableClientByDni con cliente desactivado: {}", response);
         return response;
     }
-
-    public List<ClientResponseDto> getClientsByTrainerEmail(String trainerEmail) {
-        Optional<Trainer> trainer = trainerRepository.findByEmail(trainerEmail);
-
-        if (trainer.isPresent()) {
-            // Busca los clientes asociados al email del entrenador y los mapea a DTOs
-            return clientRepository.findByTrainerEmail(trainerEmail)
-                    .stream()
-                    .map(clientMapper::entityToDto)
-                    .collect(Collectors.toList());
-        }
-
-        // Retorna una lista vacía si no se encuentra el entrenador
-        return Collections.emptyList();
-    }
-
 }

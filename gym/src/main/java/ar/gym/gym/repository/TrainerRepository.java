@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     Optional<Trainer> findByDni(String dni);
-
-    Optional<Trainer> findByEmail(String email);
 }

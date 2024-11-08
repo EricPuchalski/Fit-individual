@@ -1,9 +1,7 @@
 package ar.gym.gym.service.impl;
 
-import ar.gym.gym.dto.request.RoutineRequestDto;
 import ar.gym.gym.dto.request.TrainerRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
-import ar.gym.gym.dto.response.RoutineResponseDto;
 import ar.gym.gym.dto.response.TrainerResponseDto;
 import ar.gym.gym.mapper.ClientMapper;
 import ar.gym.gym.mapper.TrainerMapper;
@@ -132,12 +130,4 @@ public class TrainerServiceImpl implements TrainerService {
                 .map(clientMapper::entityToDto)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public RoutineResponseDto createRoutine(RoutineRequestDto routineRequestDto) {
-        return null;
-    }
-//    public RoutineResponseDto createRoutine(RoutineRequestDto routineRequestDto){
-//        return  routineServiceImpl.create(routineRequestDto);
-//    }
 }
