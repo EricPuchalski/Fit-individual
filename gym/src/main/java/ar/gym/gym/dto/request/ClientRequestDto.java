@@ -19,7 +19,6 @@ public class ClientRequestDto {
     private String lastname;
     @Pattern(regexp = "^[0-9]{8}$", message = "El DNI debe tener exactamente 8 dígitos")
     private String dni;
-    @NotBlank(message = "El teléfono es obligatorio.")
     private String phone;
     private String address;
     @Email(message = "El correo electrónico debe ser válido")
@@ -28,4 +27,6 @@ public class ClientRequestDto {
     private ClientStatus status;
     private String goal;
     private String gymName;
+    private String trainerDni;
+    private String nutritionistDni;
 }

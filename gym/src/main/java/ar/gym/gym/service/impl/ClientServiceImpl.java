@@ -5,6 +5,7 @@ import ar.gym.gym.dto.response.ClientResponseDto;
 import ar.gym.gym.mapper.ClientMapper;
 import ar.gym.gym.mapper.GymMapper;
 import ar.gym.gym.model.Client;
+import ar.gym.gym.model.ClientStatus;
 import ar.gym.gym.model.Gym;
 import ar.gym.gym.repository.ClientRepository;
 import ar.gym.gym.repository.GymRepository;
@@ -95,9 +96,17 @@ public class ClientServiceImpl implements ClientService {
         logger.info("Entrando al método findByDni con DNI: {}", dni);
 
         Client client = getClientByDniOrThrow(dni);
-        ClientResponseDto response = clientMapper.entityToDto(client);
-        response.setGymName(client.getGym().getName());
 
+        ClientResponseDto response = clientMapper.entityToDto(client);
+        if (client.getGym()!=null){
+            response.setGymName(client.getGym().getName());
+        }
+        if (client.getNutritionist()!=null){
+            response.setNutritionistDni(client.getNutritionist().getDni());
+        }
+        if (client.getTrainer()!=null){
+            response.setTrainerDni(client.getTrainer().getDni());
+        }
         logger.info("Saliendo del método findByDni con respuesta: {}", response);
         return response;
     }
@@ -114,7 +123,12 @@ public class ClientServiceImpl implements ClientService {
         if (client.get().getGym()!=null){
             response.setGymName(client.get().getGym().getName());
         }
-
+        if (client.get().getNutritionist()!=null){
+            response.setNutritionistDni(client.get().getNutritionist().getDni());
+        }
+        if (client.get().getTrainer()!=null){
+            response.setTrainerDni(client.get().getTrainer().getDni());
+        }
         logger.info("Saliendo del método findByEmail con respuesta: {}", response);
         return response;
     }
@@ -160,6 +174,20 @@ public class ClientServiceImpl implements ClientService {
             }
         }
 
+        if (clientRequestDto.getGymName() != null) {
+            Optional<Gym> gym = gymRepository.findByName(clientRequestDto.getGymName());
+
+            if (gym.isPresent()) {
+                existingClient.setGym(gym.get());
+            } else {
+                throw new EntityNotFoundException("Gimnasio no encontrado con el nombre: " + clientRequestDto.getGymName());
+            }
+        }
+
+
+
+
+
         Client updatedClient = clientRepository.save(existingClient);
         ClientResponseDto response = clientMapper.entityToDto(updatedClient);
 
@@ -188,5 +216,26 @@ public class ClientServiceImpl implements ClientService {
         ClientResponseDto response = clientMapper.entityToDto(client);
         logger.info("Saliendo del método disableClientByDni con cliente desactivado: {}", response);
         return response;
+    }
+
+    // Método para obtener los estados de un cliente por DNI
+    public List<ClientStatus> findClientStatusesByDni(String dni) {
+        logger.info("Entrando al método findClientStatusesByDni con DNI: {}", dni);
+        Client client = getClientByDniOrThrow(dni);
+        List<ClientStatus> statuses = client.getStatuses();
+        logger.info("Estados encontrados para el cliente con DNI {}: {}", dni, statuses.size());
+        return statuses;
+    }
+
+    // Método para agregar un nuevo estado a un cliente por DNI
+    public ClientStatus addClientStatus(String dni, ClientStatus newStatus) {
+        logger.info("Entrando al método addClientStatus con DNI: {} y estado: {}", dni, newStatus);
+
+        Client client = getClientByDniOrThrow(dni);
+        client.getStatuses().add(newStatus);
+        clientRepository.save(client);
+
+        logger.info("Estado agregado al cliente con DNI: {}", dni);
+        return newStatus;
     }
 }

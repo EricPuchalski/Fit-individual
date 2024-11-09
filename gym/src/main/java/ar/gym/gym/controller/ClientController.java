@@ -2,6 +2,7 @@ package ar.gym.gym.controller;
 
 import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
+import ar.gym.gym.model.ClientStatus;
 import ar.gym.gym.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -86,5 +87,21 @@ public class ClientController {
         clientService.delete(dni);
         logger.info("Client with DNI {} has been deleted", dni);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Endpoint para obtener los estados de un cliente por DNI
+    @GetMapping("/{dni}/statuses")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<List<ClientStatus>> getClientStatusesByDni(@PathVariable String dni) {
+        List<ClientStatus> statuses = clientService.findClientStatusesByDni(dni);
+        return ResponseEntity.ok(statuses);
+    }
+
+    // Endpoint para agregar un estado a un cliente por DNI
+    @PostMapping("/{dni}/statuses")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<ClientStatus> addClientStatus(@PathVariable String dni, @RequestBody ClientStatus newStatus) {
+        ClientStatus status = clientService.addClientStatus(dni, newStatus);
+        return ResponseEntity.ok(status);
     }
 }

@@ -13,7 +13,7 @@ public class Client extends Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
-    private List<ClientStatus> status;
+    private List<ClientStatus> statuses;
     private String goal;
     @ManyToOne
     @JoinColumn(name = "gym_id")
@@ -28,8 +28,6 @@ public class Client extends Person {
     private List<Routine>routines;
     @OneToMany(mappedBy = "client")
     private List<NutritionalPlan>nutritionalPlans;
-//    @OneToOne
-//    private java.lang.Record record;
     @OneToMany(mappedBy = "client")
     private List<TrainingDiary>trainingDiaryList;
     @OneToMany(mappedBy = "client")
