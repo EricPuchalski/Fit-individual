@@ -1,7 +1,9 @@
 package ar.gym.gym.controller;
 
 import ar.gym.gym.dto.request.ClientRequestDto;
+import ar.gym.gym.dto.request.ClientStatusRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
+import ar.gym.gym.dto.response.ClientStatusResponseDto;
 import ar.gym.gym.model.ClientStatus;
 import ar.gym.gym.service.ClientService;
 import jakarta.validation.Valid;
@@ -92,16 +94,20 @@ public class ClientController {
     // Endpoint para obtener los estados de un cliente por DNI
     @GetMapping("/{dni}/statuses")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    public ResponseEntity<List<ClientStatus>> getClientStatusesByDni(@PathVariable String dni) {
-        List<ClientStatus> statuses = clientService.findClientStatusesByDni(dni);
+    public ResponseEntity<List<ClientStatusResponseDto>> getClientStatusesByDni(@PathVariable String dni) {
+        List<ClientStatusResponseDto> statuses = clientService.findClientStatusesByDni(dni);
         return ResponseEntity.ok(statuses);
     }
 
     // Endpoint para agregar un estado a un cliente por DNI
     @PostMapping("/{dni}/statuses")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    public ResponseEntity<ClientStatus> addClientStatus(@PathVariable String dni, @RequestBody ClientStatus newStatus) {
-        ClientStatus status = clientService.addClientStatus(dni, newStatus);
-        return ResponseEntity.ok(status);
+    public ResponseEntity<ClientStatusResponseDto> addClientStatus(
+            @PathVariable String dni,
+            @RequestBody ClientStatusRequestDto newStatusRequestDto) {
+
+        ClientStatusResponseDto statusResponseDto = clientService.addClientStatus(dni, newStatusRequestDto);
+        return ResponseEntity.ok(statusResponseDto);
     }
+
 }

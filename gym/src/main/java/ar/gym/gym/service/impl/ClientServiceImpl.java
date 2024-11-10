@@ -1,13 +1,17 @@
 package ar.gym.gym.service.impl;
 
 import ar.gym.gym.dto.request.ClientRequestDto;
+import ar.gym.gym.dto.request.ClientStatusRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
+import ar.gym.gym.dto.response.ClientStatusResponseDto;
 import ar.gym.gym.mapper.ClientMapper;
+import ar.gym.gym.mapper.ClientStatusMapper;
 import ar.gym.gym.mapper.GymMapper;
 import ar.gym.gym.model.Client;
 import ar.gym.gym.model.ClientStatus;
 import ar.gym.gym.model.Gym;
 import ar.gym.gym.repository.ClientRepository;
+import ar.gym.gym.repository.ClientStatusRepository;
 import ar.gym.gym.repository.GymRepository;
 import ar.gym.gym.service.ClientService;
 import jakarta.persistence.EntityExistsException;
@@ -16,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +33,16 @@ public class ClientServiceImpl implements ClientService {
     private final GymRepository gymRepository;
     private final ClientMapper clientMapper;
     private final GymMapper gymMapper;
+    private final ClientStatusRepository clientStatusRepository;
+    private final ClientStatusMapper clientStatusMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, GymMapper gymMapper) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, GymMapper gymMapper, ClientStatusRepository clientStatusRepository, ClientStatusMapper clientStatusMapper) {
         this.clientRepository = clientRepository;
         this.gymRepository = gymRepository;
         this.clientMapper = clientMapper;
         this.gymMapper = gymMapper;
+        this.clientStatusRepository = clientStatusRepository;
+        this.clientStatusMapper = clientStatusMapper;
     }
 
     @Override
@@ -219,23 +228,39 @@ public class ClientServiceImpl implements ClientService {
     }
 
     // Método para obtener los estados de un cliente por DNI
-    public List<ClientStatus> findClientStatusesByDni(String dni) {
+    public List<ClientStatusResponseDto> findClientStatusesByDni(String dni) {
         logger.info("Entrando al método findClientStatusesByDni con DNI: {}", dni);
+
         Client client = getClientByDniOrThrow(dni);
         List<ClientStatus> statuses = client.getStatuses();
-        logger.info("Estados encontrados para el cliente con DNI {}: {}", dni, statuses.size());
-        return statuses;
+
+        List<ClientStatusResponseDto> responseDtos = statuses.stream()
+                .map(clientStatusMapper::entityToDto)
+                .collect(Collectors.toList());
+
+        logger.info("Estados encontrados para el cliente con DNI {}: {}", dni, responseDtos.size());
+        return responseDtos;
     }
 
-    // Método para agregar un nuevo estado a un cliente por DNI
-    public ClientStatus addClientStatus(String dni, ClientStatus newStatus) {
-        logger.info("Entrando al método addClientStatus con DNI: {} y estado: {}", dni, newStatus);
 
-        Client client = getClientByDniOrThrow(dni);
+    // Método para agregar un nuevo estado a un cliente por DNI
+    public ClientStatusResponseDto addClientStatus(String dni, ClientStatusRequestDto newStatusRequestDto) {
+        logger.info("Entrando al método addClientStatus con DNI: {} y estado DTO de solicitud: {}", dni, newStatusRequestDto);
+
+        Optional<Client> clientOptional = clientRepository.findByDni(dni);
+        if (clientOptional.isEmpty()) {
+            throw new EntityNotFoundException("Cliente no encontrado con el dni: " + dni);
+        }
+
+        Client client = clientOptional.get();
+        ClientStatus newStatus = clientStatusMapper.dtoToEntity(newStatusRequestDto);
+        newStatus.setCreationDate(LocalDate.now());
+        clientStatusRepository.save(newStatus);
         client.getStatuses().add(newStatus);
         clientRepository.save(client);
 
         logger.info("Estado agregado al cliente con DNI: {}", dni);
-        return newStatus;
+        return clientStatusMapper.entityToDto(newStatus);
     }
+
 }

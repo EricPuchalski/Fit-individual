@@ -1,21 +1,20 @@
-package ar.gym.gym.model;
+package ar.gym.gym.dto.response;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "client_status")
-public class ClientStatus {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@NoArgsConstructor
+public class ClientStatusResponseDto {
     private Long id;
     private Double weight;
     private Double height;
     private Double bodymass;
     private Double bodyfat;
     private LocalDate creationDate;
+
 }
