@@ -56,6 +56,8 @@ public class RoutineServiceImpl implements RoutineService {
         // Set the client to the routine
         routine.setClient(client);
 
+        routine.setCreationDate(LocalDate.now());
+
         // Save the new routine
         Routine newRoutine = routineRepository.save(routine);
 
@@ -279,19 +281,41 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Transactional
-    public RoutineResponseDto editSessionInRoutine(Long routineId, SessionRequestDto sessionRequestDto) {
+    @Override
+    public RoutineResponseDto editSessionInRoutine(Long routineId, Long sessionId, SessionRequestDto sessionRequestDto) {
         // Buscar la rutina por su ID
-        Routine routine = getRoutineByCodeOrThrow(routineId);
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new EntityExistsException("Routine not found"));
 
-        // Actualizar la sesión utilizando SessionService
-//        SessionResponseDto updatedSessionDto = sessionServiceImpl.update(sessionRequestDto);
+        // Buscar la sesión correspondiente a editar utilizando el sessionId
+        Session sessionToUpdate = routine.getSessions().stream()
+                .filter(session -> session.getId().equals(sessionId))
+                .findFirst()
+                .orElseThrow(() -> new EntityExistsException("Session not found"));
 
-        // No es necesario manipular la lista de sesiones directamente, ya que se ha actualizado en la base de datos
-        // Guardar la rutina actualizada (aunque las sesiones ya están vinculadas)
-        Routine updatedRoutine = routineRepository.save(routine);
+        // Actualizar la sesión con los datos del DTO
+        sessionToUpdate.setSets(sessionRequestDto.getSets());
+        sessionToUpdate.setReps(sessionRequestDto.getReps());
+        sessionToUpdate.setRestTime(sessionRequestDto.getRestTime());
+        if (sessionRequestDto.getExerciseName()!=null){
+            Optional<Exercise> exercise = exerciseRepository.findByName(sessionRequestDto.getExerciseName());
+            if (exercise.isEmpty()){
+                throw new EntityNotFoundException("Exercise not found");
+            }
+            sessionToUpdate.setExercise(exercise.get());
 
-        // Devolver el DTO de la rutina actualizada usando el mapper
-        return routineMapper.entityToDto(updatedRoutine);
+        }
+
+        // Aquí puedes agregar más campos si es necesario
+
+        // Si la relación entre Routine y Session tiene cascade, no es necesario guardar la sesión
+        routineRepository.save(routine); // Esto guarda la rutina y la sesión si la relación es cascada
+
+        // Devolver el DTO de la rutina actualizada
+        return routineMapper.entityToDto(routine);
     }
+
+
+
 
 }

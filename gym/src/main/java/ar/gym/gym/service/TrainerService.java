@@ -23,4 +23,6 @@ public interface TrainerService {
 
    List<ClientResponseDto> getClientsAssociated(String dni);
 
+    List<ClientResponseDto> getClientsAssociatedEmail(String email);
+
 }

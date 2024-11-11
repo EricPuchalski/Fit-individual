@@ -35,7 +35,7 @@ public class ExerciseController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TRAINER')")
     public ResponseEntity<List<ExerciseResponseDto>> findAll() {
         logger.info("Fetching all exercises");
         List<ExerciseResponseDto> exercises = exerciseService.findAll();
@@ -44,7 +44,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{name}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TRAINER')")
     public ResponseEntity<Exercise> findByName(@PathVariable String name) {
         logger.info("Fetching exercise with name: {}", name);
         Optional<Exercise> exercise = exerciseService.findByName(name);

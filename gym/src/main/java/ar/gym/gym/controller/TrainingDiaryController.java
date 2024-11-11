@@ -49,6 +49,7 @@ public class TrainingDiaryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public ResponseEntity<TrainingDiaryResponseDto> updateTrainingDiary(
             @PathVariable Long id,
             @RequestBody TrainingDiaryRequestDto requestDto) {
