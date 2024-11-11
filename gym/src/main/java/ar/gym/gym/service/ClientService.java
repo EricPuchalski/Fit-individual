@@ -4,8 +4,10 @@ import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.request.ClientStatusRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
 import ar.gym.gym.dto.response.ClientStatusResponseDto;
+import ar.gym.gym.dto.response.NotificationResponseDto;
 import ar.gym.gym.model.Client;
 import ar.gym.gym.model.ClientStatus;
+import ar.gym.gym.model.Notification;
 
 import java.util.List;
 
@@ -26,6 +28,6 @@ public interface ClientService{
     List<ClientStatusResponseDto> findClientStatusesByDni(String dni);
     // Método para agregar un nuevo estado a un cliente por DNI
     ClientStatusResponseDto addClientStatus(String dni, ClientStatusRequestDto newStatusRequestDto);
-
-
+    List<NotificationResponseDto> findByDniAndNotificationsSeenFalse(String dni);
+    NotificationResponseDto markNotificationAsSeen(String dni, Long notificationId);
 }

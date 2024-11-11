@@ -1,11 +1,15 @@
 package ar.gym.gym.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "clients")
 public class Client extends Person {
@@ -32,5 +36,7 @@ public class Client extends Person {
     private List<TrainingDiary>trainingDiaryList;
     @OneToMany(mappedBy = "client")
     private List<NutritionalDiary>nutritionalDiaryList;
+    @OneToMany(mappedBy = "client")
+    private List<Notification> notifications;
     private Boolean active = true;
 }

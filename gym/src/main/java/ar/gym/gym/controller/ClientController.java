@@ -4,7 +4,9 @@ import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.request.ClientStatusRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
 import ar.gym.gym.dto.response.ClientStatusResponseDto;
+import ar.gym.gym.dto.response.NotificationResponseDto;
 import ar.gym.gym.model.ClientStatus;
+import ar.gym.gym.model.Notification;
 import ar.gym.gym.service.ClientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -110,4 +112,26 @@ public class ClientController {
         return ResponseEntity.ok(statusResponseDto);
     }
 
+    @GetMapping("/{dniClient}/notifications")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<List<NotificationResponseDto>> getUnseenNotificationsByDni(@PathVariable String dniClient) {
+        // Llamamos al servicio para obtener las notificaciones no vistas
+        List<NotificationResponseDto> unseenNotifications = clientService.findByDniAndNotificationsSeenFalse(dniClient);
+
+        // Devuelve las notificaciones no vistas, incluso si la lista está vacía (responderá con 200 OK y lista vacía)
+        return ResponseEntity.ok(unseenNotifications);
+    }
+
+    @PutMapping("/{dniClient}/notificactions/{notificationId}/mark")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public ResponseEntity<NotificationResponseDto> markNotificationAsSeen(
+            @PathVariable String dniClient,
+            @PathVariable Long notificationId) {
+
+        // Llamamos al servicio para marcar la notificación como vista
+        NotificationResponseDto updatedNotification = clientService.markNotificationAsSeen(dniClient, notificationId);
+
+        // Devuelve la notificación actualizada con un código 200 OK
+        return ResponseEntity.ok(updatedNotification);
+    }
 }

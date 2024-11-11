@@ -4,12 +4,15 @@ import ar.gym.gym.dto.request.ClientRequestDto;
 import ar.gym.gym.dto.request.ClientStatusRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
 import ar.gym.gym.dto.response.ClientStatusResponseDto;
+import ar.gym.gym.dto.response.NotificationResponseDto;
 import ar.gym.gym.mapper.ClientMapper;
 import ar.gym.gym.mapper.ClientStatusMapper;
 import ar.gym.gym.mapper.GymMapper;
+import ar.gym.gym.mapper.NotificationMapper;
 import ar.gym.gym.model.Client;
 import ar.gym.gym.model.ClientStatus;
 import ar.gym.gym.model.Gym;
+import ar.gym.gym.model.Notification;
 import ar.gym.gym.repository.ClientRepository;
 import ar.gym.gym.repository.ClientStatusRepository;
 import ar.gym.gym.repository.GymRepository;
@@ -35,14 +38,16 @@ public class ClientServiceImpl implements ClientService {
     private final GymMapper gymMapper;
     private final ClientStatusRepository clientStatusRepository;
     private final ClientStatusMapper clientStatusMapper;
+    private final NotificationMapper notificationMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, GymMapper gymMapper, ClientStatusRepository clientStatusRepository, ClientStatusMapper clientStatusMapper) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository, ClientMapper clientMapper, GymMapper gymMapper, ClientStatusRepository clientStatusRepository, ClientStatusMapper clientStatusMapper, NotificationMapper notificationMapper) {
         this.clientRepository = clientRepository;
         this.gymRepository = gymRepository;
         this.clientMapper = clientMapper;
         this.gymMapper = gymMapper;
         this.clientStatusRepository = clientStatusRepository;
         this.clientStatusMapper = clientStatusMapper;
+        this.notificationMapper = notificationMapper;
     }
 
     @Override
@@ -243,7 +248,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
-    // Método para agregar un nuevo estado a un cliente por DNI
+    // Metodo para agregar un nuevo estado a un cliente por DNI
     public ClientStatusResponseDto addClientStatus(String dni, ClientStatusRequestDto newStatusRequestDto) {
         logger.info("Entrando al método addClientStatus con DNI: {} y estado DTO de solicitud: {}", dni, newStatusRequestDto);
 
@@ -262,5 +267,42 @@ public class ClientServiceImpl implements ClientService {
         logger.info("Estado agregado al cliente con DNI: {}", dni);
         return clientStatusMapper.entityToDto(newStatus);
     }
+    // Metodo para obtener todas las notificaciones no vistas por el DNI del cliente
+    public List<NotificationResponseDto> findByDniAndNotificationsSeenFalse(String dni) {
+        // Obtener la lista de notificaciones del repositorio
+        List<Notification> notifications = clientRepository.findByDniAndNotificationsSeenFalse(dni);
+
+        // Convertir la lista de Notification a NotificationResponseDto usando el mapper
+        return notifications.stream()
+                .map(notificationMapper::entityToDto) // Usamos el mapper para convertir cada entidad a su DTO correspondiente
+                .collect(Collectors.toList()); // Recoger el resultado en una lista
+    }
+
+
+    @Override
+    public NotificationResponseDto markNotificationAsSeen(String dni, Long notificationId) {
+        logger.info("Entrando al método markNotificationAsSeen con DNI: {} y Notification ID: {}", dni, notificationId);
+
+        // Buscar el cliente por su DNI
+        Client client = getClientByDniOrThrow(dni);
+
+        // Buscar la notificación correspondiente al ID en la lista de notificaciones del cliente
+        Notification notification = client.getNotifications().stream()
+                .filter(n -> n.getId().equals(notificationId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Notificación no encontrada con ID: " + notificationId));
+
+        // Marcar la notificación como vista
+        notification.setSeen(true);
+
+        // Guardar la notificación actualizada en la base de datos
+        clientRepository.save(client);  // También guarda el cliente para que se persista la actualización de las notificaciones
+
+        logger.info("Notificación marcada como vista para el cliente con DNI: {}", dni);
+
+        return notificationMapper.entityToDto(notification);  // Devolvemos la notificación actualizada
+    }
+
+
 
 }
