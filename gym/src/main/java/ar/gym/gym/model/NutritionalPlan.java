@@ -1,5 +1,6 @@
 package ar.gym.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,17 +14,19 @@ public class NutritionalPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
     private String type;
     private Date startDate;
     private Date endDate;
     private String description;
     private Double dailyCalories;
     private boolean active;
+
     @OneToMany(mappedBy = "nutritionalPlan")
     private List<Food> foodList;
-
-
 }

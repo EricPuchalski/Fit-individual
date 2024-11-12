@@ -38,4 +38,6 @@ public interface RoutineService {
 
     RoutineResponseDto completeRoutine(Long idRoutine);
 
+    RoutineResponseDto deactivateRoutine(Long routineId);
+
 }

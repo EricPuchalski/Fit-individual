@@ -101,9 +101,12 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findByDni(dni)
                 .orElseThrow(() -> new EntityNotFoundException("El cliente con el dni " + dni + " no existe"));
 
-        logger.info("Saliendo del método getClientByDniOrThrow con cliente encontrado: {}", client);
+        logger.info("Saliendo del método getClientByDniOrThrow con cliente encontrado: ID={}, Nombre={}",
+                client.getId(), client.getName());
+
         return client;
     }
+
 
     @Override
     public ClientResponseDto findByDni(String dni) {

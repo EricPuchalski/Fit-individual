@@ -1,5 +1,6 @@
 package ar.gym.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,17 +13,18 @@ public class Gym {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
-    private String gymCode;
     private String name;
     private String phone;
     private String email;
     private String address;
-    @OneToMany(mappedBy = "gym")
-    private List<Client>clientList;
-    @OneToMany(mappedBy = "gym")
-    private List<Trainer>trainerList;
-    @OneToMany(mappedBy = "gym")
-    private List<Nutritionist>nutritionistList;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "gym")
+    private List<Client> clientList;
+
+    @OneToMany(mappedBy = "gym")
+    private List<Trainer> trainerList;
+
+    @OneToMany(mappedBy = "gym")
+    private List<Nutritionist> nutritionistList;
 }

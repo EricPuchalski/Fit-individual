@@ -52,7 +52,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
         // Convertir el DTO a entidad
         TrainingDiary trainingDiary = trainingDiaryMapper.dtoToEntity(requestDto);
         trainingDiary.setClient(client);
-        trainingDiary.setDate(LocalDateTime.now());
+        trainingDiary.setCreationDate(LocalDateTime.now());
 
         // Guardar en la base de datos
         trainingDiary = trainingDiaryRepository.save(trainingDiary);
@@ -105,7 +105,6 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
 
         // Actualizar los campos con los datos del requestDto
         trainingDiary.setObservation(requestDto.getObservation());
-        trainingDiary.setCompleted(requestDto.getSession() != null);
 
         // Guardar los cambios
         trainingDiary = trainingDiaryRepository.save(trainingDiary);

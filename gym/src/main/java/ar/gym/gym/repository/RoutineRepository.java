@@ -1,6 +1,7 @@
 package ar.gym.gym.repository;
 
 import ar.gym.gym.model.Routine;
+import ar.gym.gym.model.TrainingPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,7 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     Optional<Routine> findByClientIdAndActiveTrue(Long id);
 
     List<Routine> findAllByClientDni(String clientDni);
+
+    List<Routine> findByTrainingPlanAndActiveTrue(TrainingPlan trainingPlan);
+
 }

@@ -15,6 +15,7 @@ public class ClientResponseDto {
     private String name;
     private String lastname;
     private String dni;
+    private String initialPhysicalState; //Estado fisico inicial
     private String phone;
     private String address;
     private String email;
@@ -24,4 +25,5 @@ public class ClientResponseDto {
     private String gymName;
     private String trainerDni;
     private String nutritionistDni;
+
 }

@@ -1,5 +1,6 @@
 package ar.gym.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class Trainer extends Person {
     private Long id;
     private String profession;
     private boolean available;
+    @JsonBackReference
     @OneToMany(mappedBy = "trainer")
     private List<Client>clients;
     @ManyToOne

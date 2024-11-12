@@ -1,5 +1,6 @@
 package ar.gym.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,8 @@ public class Notification {
     private String message;
     private boolean seen;
     private LocalDateTime creationDate;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;

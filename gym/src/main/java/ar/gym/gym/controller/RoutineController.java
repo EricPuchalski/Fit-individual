@@ -85,7 +85,7 @@ public class RoutineController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<RoutineResponseDto> getRoutineById(@PathVariable Long id) {
         RoutineResponseDto routine = routineService.findById(id);
         return new ResponseEntity<>(routine, HttpStatus.OK);
@@ -134,5 +134,13 @@ public class RoutineController {
         // Devolvemos la respuesta con el DTO de la rutina actualizada
         return ResponseEntity.ok(updatedRoutine);
     }
+
+    @PostMapping("/deactivate/{routineId}")
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    public ResponseEntity<Void> deactivateRoutine(@PathVariable Long routineId) {
+        routineService.deactivateRoutine(routineId); // Llamar al servicio para desactivar la rutina
+        return ResponseEntity.ok().build(); // Retorna una respuesta exitosa
+    }
+
 }
 

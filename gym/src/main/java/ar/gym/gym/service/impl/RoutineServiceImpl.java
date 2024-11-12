@@ -46,7 +46,7 @@ public class RoutineServiceImpl implements RoutineService {
         Routine routine = routineMapper.dtoToEntity(routineRequestDto);
 
         // Set active to false initially
-        routine.setActive(false);
+        routine.setActive(true);
 
         // Set the client to the routine
         routine.setClient(client);
@@ -76,15 +76,6 @@ public class RoutineServiceImpl implements RoutineService {
         // Fetch the client by ID
         Client client = clientRepository.findByDni(dni)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
-
-        // Fetch the routines for the client
-        List<Routine> routines = routineRepository.findByClientId(client.getId());
-
-        // Set all routines to inactive
-        for (Routine r : routines) {
-            r.setActive(false);
-            routineRepository.save(r);
-        }
 
         // Activate the selected routine
         Routine routineToActivate = routineRepository.findById(routineId)
@@ -135,19 +126,27 @@ public class RoutineServiceImpl implements RoutineService {
         // 3. Obtener el DNI del cliente asociado a la rutina
         String clientDni = routine.getClient().getDni();
 
-        // 4. Verificar si todas las rutinas del cliente están completadas
+        // 4. Obtener todas las rutinas del cliente
         List<Routine> clientRoutines = routineRepository.findAllByClientDni(clientDni);
-        boolean allCompleted = clientRoutines.stream().allMatch(Routine::isCompleted);
+
+        // 5. Filtrar las rutinas activas
+        List<Routine> activeRoutines = clientRoutines.stream()
+                .filter(Routine::isActive)
+                .toList();
+
+        // 6. Verificar si todas las rutinas activas están completadas
+        boolean allCompleted = activeRoutines.stream().allMatch(Routine::isCompleted);
 
         if (allCompleted) {
-            // 5. Si todas están completadas, restablecer el estado de todas las rutinas a no completado
+            // 7. Si todas están completadas, restablecer el estado de todas las rutinas a no completado
             clientRoutines.forEach(r -> r.setCompleted(false));
             routineRepository.saveAll(clientRoutines);
         }
 
-        // 6. Convertir la rutina actualizada a un DTO y devolverla
+        // 8. Convertir la rutina actualizada a un DTO y devolverla
         return routineMapper.entityToDto(routine);
     }
+
 
 
 
@@ -171,10 +170,13 @@ public class RoutineServiceImpl implements RoutineService {
         Client client = clientRepository.findByEmail(clientEmail)
                 .orElseThrow(() -> new EntityNotFoundException("No existe un cliente con el email: " + clientEmail));
 
-        // Fetch all routines for the client
-        List<Routine> routines = routineRepository.findByClientId(client.getId());
+        // Fetch all routines for the client and filter by active status
+        List<Routine> routines = routineRepository.findByClientId(client.getId())
+                .stream()
+                .filter(Routine::isActive)  // Filtra solo las rutinas activas
+                .toList();
 
-        // Return the list of routines as DTOs
+        // Convert the list of active routines to DTOs
         return routines.stream()
                 .map(routineMapper::entityToDto)
                 .collect(Collectors.toList());
@@ -343,6 +345,22 @@ public class RoutineServiceImpl implements RoutineService {
         return routineMapper.entityToDto(routine);
     }
 
+    @Transactional
+    @Override
+    public RoutineResponseDto deactivateRoutine(Long routineId) {
+        // Buscar la rutina por su ID
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new EntityNotFoundException("Routine not found"));
+
+        // Desactivar la rutina (setActive false)
+        routine.setActive(false);
+
+        // Guardar la rutina desactivada en la base de datos
+        routineRepository.save(routine);
+
+        // Convertir la rutina desactivada a DTO y devolverla
+        return routineMapper.entityToDto(routine);
+    }
 
 
 

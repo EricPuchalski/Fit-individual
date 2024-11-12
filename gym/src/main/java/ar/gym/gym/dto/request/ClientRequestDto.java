@@ -29,4 +29,6 @@ public class ClientRequestDto {
     private String gymName;
     private String trainerDni;
     private String nutritionistDni;
+    private String initialPhysicalState; //Estado fisico inicial
+
 }

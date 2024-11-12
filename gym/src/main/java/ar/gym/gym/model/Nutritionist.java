@@ -1,5 +1,6 @@
 package ar.gym.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,11 +19,12 @@ public class Nutritionist extends Person {
     private Long id;
     private String profession;
     private boolean available;
+
+    @JsonBackReference
     @OneToMany(mappedBy = "nutritionist")
-    private List<Client>clients;
+    private List<Client> clients;
+
     @ManyToOne
     @JoinColumn(name = "gym_id")
     private Gym gym;
-
-
 }
