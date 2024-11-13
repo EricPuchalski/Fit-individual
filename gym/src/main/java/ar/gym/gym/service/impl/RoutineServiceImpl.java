@@ -28,13 +28,16 @@ public class RoutineServiceImpl implements RoutineService {
     private final ExerciseRepository exerciseRepository;
     private final NotificationRepository notificationRepository;
 
-    public RoutineServiceImpl(RoutineRepository routineRepository, RoutineMapper routineMapper, ClientRepository clientRepository, SessionRepository sessionRepository, ExerciseRepository exerciseRepository, NotificationRepository notificationRepository) {
+    private final TrainingPlanRepository trainingPlanRepository;
+
+    public RoutineServiceImpl(RoutineRepository routineRepository, RoutineMapper routineMapper, ClientRepository clientRepository, SessionRepository sessionRepository, ExerciseRepository exerciseRepository, NotificationRepository notificationRepository, TrainingPlanRepository trainingPlanRepository) {
         this.routineRepository = routineRepository;
         this.routineMapper = routineMapper;
         this.clientRepository = clientRepository;
         this.sessionRepository = sessionRepository;
         this.exerciseRepository = exerciseRepository;
         this.notificationRepository = notificationRepository;
+        this.trainingPlanRepository = trainingPlanRepository;
     }
 
     @Override
@@ -126,17 +129,27 @@ public class RoutineServiceImpl implements RoutineService {
         // 3. Obtener el DNI del cliente asociado a la rutina
         String clientDni = routine.getClient().getDni();
 
-        // 4. Obtener todas las rutinas activas del cliente
-        List<Routine> activeRoutines = routineRepository.findAllByClientDni(clientDni)
-                .stream()
+        // 4. Obtener el cliente asociado a la rutina
+        Client client = clientRepository.findByDni(clientDni)
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+
+        // 5. Obtener el plan de entrenamiento activo del cliente
+        List<TrainingPlan> activeTrainingPlans = trainingPlanRepository.findByClientAndActiveTrue(client);
+        if (activeTrainingPlans.isEmpty()) {
+            throw new EntityNotFoundException("Active training plan not found");
+        }
+        TrainingPlan activeTrainingPlan = activeTrainingPlans.get(0);
+
+        // 6. Obtener todas las rutinas activas del plan de entrenamiento activo
+        List<Routine> activeRoutines = activeTrainingPlan.getRoutines().stream()
                 .filter(Routine::isActive)
                 .collect(Collectors.toList());
 
-        // 5. Verificar si todas las rutinas activas están completadas
+        // 7. Verificar si todas las rutinas activas están completadas
         boolean allCompleted = activeRoutines.stream().allMatch(Routine::isCompleted);
 
         if (allCompleted) {
-            // 6. Si todas están completadas, restablecer el estado de todas las rutinas activas a no completado
+            // 8. Si todas están completadas, restablecer el estado de todas las rutinas activas a no completado
             activeRoutines.forEach(r -> r.setCompleted(false));
             routineRepository.saveAll(activeRoutines);
         } else {
@@ -144,9 +157,10 @@ public class RoutineServiceImpl implements RoutineService {
             routineRepository.save(routine);
         }
 
-        // 7. Convertir la rutina actualizada a un DTO y devolverla
+        // 9. Convertir la rutina actualizada a un DTO y devolverla
         return routineMapper.entityToDto(routine);
     }
+
 
 
 
