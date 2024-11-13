@@ -30,8 +30,6 @@ public class Client extends Person {
     @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
-    private String initialPhysicalState;
-
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "nutritionist_id")
@@ -57,6 +55,4 @@ public class Client extends Person {
     @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Notification> notifications;
-
-    private Boolean active = true;
 }

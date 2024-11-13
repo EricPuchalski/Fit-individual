@@ -105,8 +105,11 @@ public class TrainingPlanController {
     }
 
     @GetMapping("/client/{dni}")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<List<TrainingPlanResponseDto>> getTrainingPlansByClientDni(@PathVariable String dni) {
         List<TrainingPlanResponseDto> trainingPlans = trainingPlanService.findAllTrainingPlansByClientDni(dni);
         return ResponseEntity.ok(trainingPlans);
     }
+
+
 }
