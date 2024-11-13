@@ -38,4 +38,6 @@ public interface TrainingPlanService {
     TrainingPlanResponseDto findActiveTrainingPlanByClientDni(String dni);
 
     TrainingPlanResponseDto getTrainingPlanWithActiveRoutines(String dni);
+
+    List<TrainingPlanResponseDto> findAllTrainingPlansByClientDni(String dni);
 }

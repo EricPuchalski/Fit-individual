@@ -104,4 +104,9 @@ public class TrainingPlanController {
         return ResponseEntity.ok(activeTrainingPlan);
     }
 
+    @GetMapping("/client/{dni}")
+    public ResponseEntity<List<TrainingPlanResponseDto>> getTrainingPlansByClientDni(@PathVariable String dni) {
+        List<TrainingPlanResponseDto> trainingPlans = trainingPlanService.findAllTrainingPlansByClientDni(dni);
+        return ResponseEntity.ok(trainingPlans);
+    }
 }

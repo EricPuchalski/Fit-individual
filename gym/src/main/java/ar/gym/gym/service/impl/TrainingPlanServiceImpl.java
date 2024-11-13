@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -257,7 +258,25 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
         logger.info("Plan de entrenamiento con rutinas activas encontrado para el cliente con DNI {}: {}", dni, response);
         return response;
     }
+    @Override
+    public List<TrainingPlanResponseDto> findAllTrainingPlansByClientDni(String dni) {
+        logger.info("Buscando todos los planes de entrenamiento para el cliente con DNI: {}", dni);
 
+        // Buscar el cliente por DNI
+        Client client = clientRepository.findByDni(dni)
+                .orElseThrow(() -> new EntityNotFoundException("El cliente con el DNI " + dni + " no existe"));
+
+        // Obtener todos los planes de entrenamiento asociados al cliente
+        Optional<TrainingPlan> trainingPlans = trainingPlanRepository.findByClient(client);
+
+        // Mapear los planes a DTOs
+        List<TrainingPlanResponseDto> response = trainingPlans.stream()
+                .map(trainingPlanMapper::entityToDto)
+                .collect(Collectors.toList());
+
+        logger.info("Se encontraron {} planes de entrenamiento para el cliente con DNI: {}", response.size(), dni);
+        return response;
+    }
 
 
 

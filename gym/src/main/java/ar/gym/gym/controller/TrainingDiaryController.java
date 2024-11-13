@@ -31,18 +31,20 @@ public class TrainingDiaryController {
     }
 
     @GetMapping("/client/{clientDni}")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<List<TrainingDiaryResponseDto>> getAllDiariesByClient(@PathVariable String clientDni) {
         List<TrainingDiaryResponseDto> diaries = trainingDiaryService.getAllDiariesByClient(clientDni);
         return ResponseEntity.ok(diaries);
     }
 
     @GetMapping("/{id}/sessions")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public List<SessionToTrainingDiaryResponseDto> getSessionsByTrainingDiaryId(@PathVariable Long id) {
         return trainingDiaryService.getSessionsByTrainingDiaryId(id);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<TrainingDiaryResponseDto> getDiaryById(@PathVariable Long id) {
         TrainingDiaryResponseDto diary = trainingDiaryService.getDiaryById(id);
         return ResponseEntity.ok(diary);
@@ -58,6 +60,7 @@ public class TrainingDiaryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT')")
     public ResponseEntity<Void> deleteTrainingDiary(@PathVariable Long id) {
         trainingDiaryService.deleteTrainingDiary(id);
         return ResponseEntity.noContent().build();
@@ -83,6 +86,7 @@ public class TrainingDiaryController {
 
     // Endpoint para eliminar una sesión por ID
     @DeleteMapping("/sessions/{idSession}")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT')")
     public ResponseEntity<Void> deleteSession(@PathVariable Long idSession) {
         trainingDiaryService.deleteSession(idSession);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content

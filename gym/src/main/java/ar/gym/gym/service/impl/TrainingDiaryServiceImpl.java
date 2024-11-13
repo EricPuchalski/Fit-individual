@@ -79,7 +79,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
     public List<TrainingDiaryResponseDto> getAllDiariesByClient(String clientDni) {
         // Buscar todos los diarios de entrenamiento del cliente por DNI
         Client client = clientRepository.findByDni(clientDni)
-                .orElseThrow(() -> new RuntimeException("Client not found with DNI: " + clientDni));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found with DNI: " + clientDni));
 
         return trainingDiaryRepository.findByClient(client)
                 .stream()
@@ -91,7 +91,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
     public TrainingDiaryResponseDto getDiaryById(Long id) {
         // Buscar el diario de entrenamiento por ID
         TrainingDiary trainingDiary = trainingDiaryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Training Diary not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Training Diary not found with ID: " + id));
 
         return trainingDiaryMapper.entityToDto(trainingDiary);
     }
@@ -101,7 +101,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
     public TrainingDiaryResponseDto updateTrainingDiary(Long id, TrainingDiaryRequestDto requestDto) {
         // Buscar el diario de entrenamiento existente por ID
         TrainingDiary trainingDiary = trainingDiaryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Training Diary not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Training Diary not found with ID: " + id));
 
         // Actualizar los campos con los datos del requestDto
         trainingDiary.setObservation(requestDto.getObservation());
@@ -117,7 +117,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
     public void deleteTrainingDiary(Long id) {
         // Verificar si el diario de entrenamiento existe antes de eliminar
         TrainingDiary trainingDiary = trainingDiaryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Training Diary not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Training Diary not found with ID: " + id));
 
         trainingDiaryRepository.delete(trainingDiary);
     }

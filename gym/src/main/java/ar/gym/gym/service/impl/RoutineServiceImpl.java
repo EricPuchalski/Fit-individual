@@ -47,6 +47,7 @@ public class RoutineServiceImpl implements RoutineService {
 
         // Set active to false initially
         routine.setActive(true);
+        routine.setCompleted(false);
 
         // Set the client to the routine
         routine.setClient(client);
@@ -119,33 +120,34 @@ public class RoutineServiceImpl implements RoutineService {
         Routine routine = routineRepository.findById(idRoutine)
                 .orElseThrow(() -> new EntityNotFoundException("Routine not found"));
 
-        // 2. Marcar la rutina como completada
+        // 2. Marcar la rutina como completada, pero no guardarla aún
         routine.setCompleted(true);
-        routineRepository.save(routine);
 
         // 3. Obtener el DNI del cliente asociado a la rutina
         String clientDni = routine.getClient().getDni();
 
-        // 4. Obtener todas las rutinas del cliente
-        List<Routine> clientRoutines = routineRepository.findAllByClientDni(clientDni);
-
-        // 5. Filtrar las rutinas activas
-        List<Routine> activeRoutines = clientRoutines.stream()
+        // 4. Obtener todas las rutinas activas del cliente
+        List<Routine> activeRoutines = routineRepository.findAllByClientDni(clientDni)
+                .stream()
                 .filter(Routine::isActive)
                 .toList();
 
-        // 6. Verificar si todas las rutinas activas están completadas
+        // 5. Verificar si todas las rutinas activas están completadas
         boolean allCompleted = activeRoutines.stream().allMatch(Routine::isCompleted);
 
         if (allCompleted) {
-            // 7. Si todas están completadas, restablecer el estado de todas las rutinas a no completado
-            clientRoutines.forEach(r -> r.setCompleted(false));
-            routineRepository.saveAll(clientRoutines);
+            // 6. Si todas están completadas, restablecer el estado de todas las rutinas activas a no completado
+            activeRoutines.forEach(r -> r.setCompleted(false));
+            routineRepository.saveAll(activeRoutines);
+        } else {
+            // Si no todas están completadas, guardar la rutina actual individualmente
+            routineRepository.save(routine);
         }
 
-        // 8. Convertir la rutina actualizada a un DTO y devolverla
+        // 7. Convertir la rutina actualizada a un DTO y devolverla
         return routineMapper.entityToDto(routine);
     }
+
 
 
 
