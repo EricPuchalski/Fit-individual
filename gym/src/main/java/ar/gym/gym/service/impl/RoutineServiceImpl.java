@@ -130,7 +130,7 @@ public class RoutineServiceImpl implements RoutineService {
         List<Routine> activeRoutines = routineRepository.findAllByClientDni(clientDni)
                 .stream()
                 .filter(Routine::isActive)
-                .toList();
+                .collect(Collectors.toList());
 
         // 5. Verificar si todas las rutinas activas están completadas
         boolean allCompleted = activeRoutines.stream().allMatch(Routine::isCompleted);
@@ -147,6 +147,7 @@ public class RoutineServiceImpl implements RoutineService {
         // 7. Convertir la rutina actualizada a un DTO y devolverla
         return routineMapper.entityToDto(routine);
     }
+
 
 
 

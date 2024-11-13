@@ -95,7 +95,7 @@ public class ClientController {
 
     // Endpoint para obtener los estados de un cliente por DNI
     @GetMapping("/{dni}/statuses")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<List<ClientStatusResponseDto>> getClientStatusesByDni(@PathVariable String dni) {
         List<ClientStatusResponseDto> statuses = clientService.findClientStatusesByDni(dni);
         return ResponseEntity.ok(statuses);
@@ -103,7 +103,7 @@ public class ClientController {
 
     // Endpoint para agregar un estado a un cliente por DNI
     @PostMapping("/{dni}/statuses")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<ClientStatusResponseDto> addClientStatus(
             @PathVariable String dni,
             @RequestBody ClientStatusRequestDto newStatusRequestDto) {
