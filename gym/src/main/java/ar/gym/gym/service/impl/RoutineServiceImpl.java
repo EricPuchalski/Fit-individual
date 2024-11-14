@@ -43,7 +43,7 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineResponseDto create(RoutineRequestDto routineRequestDto) {
         Client client = clientRepository.findByDni(routineRequestDto.getClientDni())
-                .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
 
         // Convert DTO to entity
         Routine routine = routineMapper.dtoToEntity(routineRequestDto);
