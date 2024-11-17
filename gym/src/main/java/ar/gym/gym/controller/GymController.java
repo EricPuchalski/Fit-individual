@@ -6,11 +6,13 @@ import ar.gym.gym.dto.response.AddClientToTrainerResponseDto;
 import ar.gym.gym.dto.response.GymResponseDto;
 import ar.gym.gym.model.Gym;
 import ar.gym.gym.service.GymService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class GymController {
     // Endpoint para crear un nuevo gimnasio
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<GymResponseDto> create(@RequestBody GymRequestDto gymRequestDto) {
+    public ResponseEntity<GymResponseDto> create(@Valid  @RequestBody GymRequestDto gymRequestDto) {
         logger.info("Creating a new gym: {}", gymRequestDto);
         GymResponseDto createdGym = gymService.create(gymRequestDto);
         logger.info("Gym created successfully: {}", createdGym);
@@ -62,7 +64,7 @@ public class GymController {
 
     // Endpoint para actualizar un gimnasio existente
     @PutMapping("/{id}")
-    public ResponseEntity<GymResponseDto> update(@RequestBody GymRequestDto gymRequestDto, @PathVariable Long id) {
+    public ResponseEntity<GymResponseDto> update(@Valid @RequestBody GymRequestDto gymRequestDto, @PathVariable Long id) {
         logger.info("Updating gym with ID: {}", id);
         GymResponseDto updatedGym = gymService.update(gymRequestDto, id);
         logger.info("Gym updated successfully: {}", updatedGym);

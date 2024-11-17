@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainerRequestDto {
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String lastname;
-    @Pattern(regexp = "^[0-9]{8}$", message = "El DNI debe tener exactamente 8 dígitos")
+    @Pattern(regexp = "^[0-9]{7,8}$", message = "El DNI debe tener entre 7 y 8 dígitos")
     private String dni;
     @NotBlank(message = "El teléfono es obligatorio.")
     private String phone;

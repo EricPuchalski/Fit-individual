@@ -5,6 +5,7 @@ import ar.gym.gym.dto.request.TrainingDiaryRequestDto;
 import ar.gym.gym.dto.response.SessionToTrainingDiaryResponseDto;
 import ar.gym.gym.dto.response.TrainingDiaryResponseDto;
 import ar.gym.gym.service.TrainingDiaryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +26,7 @@ public class TrainingDiaryController {
 
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
-    public ResponseEntity<TrainingDiaryResponseDto> createTrainingDiary(@RequestBody TrainingDiaryRequestDto requestDto) {
+    public ResponseEntity<TrainingDiaryResponseDto> createTrainingDiary(@Valid  @RequestBody TrainingDiaryRequestDto requestDto) {
         TrainingDiaryResponseDto createdDiary = trainingDiaryService.createTrainingDiary(requestDto);
         return ResponseEntity.ok(createdDiary);
     }
@@ -54,7 +55,7 @@ public class TrainingDiaryController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public ResponseEntity<TrainingDiaryResponseDto> updateTrainingDiary(
             @PathVariable Long id,
-            @RequestBody TrainingDiaryRequestDto requestDto) {
+            @Valid @RequestBody TrainingDiaryRequestDto requestDto) {
         TrainingDiaryResponseDto updatedDiary = trainingDiaryService.updateTrainingDiary(id, requestDto);
         return ResponseEntity.ok(updatedDiary);
     }
@@ -70,7 +71,7 @@ public class TrainingDiaryController {
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     public ResponseEntity<SessionToTrainingDiaryResponseDto> addSessionToDiary(
             @PathVariable Long id,
-            @RequestBody SessionToTrainingDiaryRequestDto sessionRequestDto) {
+            @Valid  @RequestBody SessionToTrainingDiaryRequestDto sessionRequestDto) {
         SessionToTrainingDiaryResponseDto newSession = trainingDiaryService.addSessionToDiary(id, sessionRequestDto);
         return ResponseEntity.ok(newSession);
     }

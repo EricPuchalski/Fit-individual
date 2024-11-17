@@ -20,6 +20,8 @@ public class Client extends Person {
 
     @OneToMany
     private List<ClientStatus> statuses;
+    private String initialPhysicalState; //Estado fisico inicial
+
     private String goal;
 
     @ManyToOne

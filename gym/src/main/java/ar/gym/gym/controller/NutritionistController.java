@@ -4,12 +4,14 @@ import ar.gym.gym.dto.request.NutritionistRequestDto;
 import ar.gym.gym.dto.response.ClientResponseDto;
 import ar.gym.gym.dto.response.NutritionistResponseDto;
 import ar.gym.gym.service.NutritionistService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class NutritionistController {
     private static final Logger logger = LoggerFactory.getLogger(NutritionistController.class);
 
     @PostMapping
-    public ResponseEntity<NutritionistResponseDto> create(@RequestBody NutritionistRequestDto nutritionistRequestDto) {
+    public ResponseEntity<NutritionistResponseDto> create(@Valid  @RequestBody NutritionistRequestDto nutritionistRequestDto) {
         logger.info("Creating nutritionist with request: {}", nutritionistRequestDto);
         NutritionistResponseDto createdNutritionist = nutritionistService.create(nutritionistRequestDto);
         logger.info("Created nutritionist: {}", createdNutritionist);
@@ -48,7 +50,7 @@ public class NutritionistController {
     }
 
     @PutMapping("/{dni}")
-    public ResponseEntity<NutritionistResponseDto> update(@RequestBody NutritionistRequestDto nutritionistRequestDto, @PathVariable String dni) {
+    public ResponseEntity<NutritionistResponseDto> update(@Valid @RequestBody NutritionistRequestDto nutritionistRequestDto, @PathVariable String dni) {
         logger.info("Updating nutritionist with DNI: {} and request: {}", dni, nutritionistRequestDto);
         NutritionistResponseDto updatedNutritionist = nutritionistService.update(nutritionistRequestDto);
         logger.info("Updated nutritionist: {}", updatedNutritionist);

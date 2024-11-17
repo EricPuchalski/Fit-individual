@@ -32,7 +32,7 @@ public class ClientController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ClientResponseDto> create(@Validated @RequestBody ClientRequestDto clientRequestDto) {
+    public ResponseEntity<ClientResponseDto> create(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         logger.info("Creating a new client: {}", clientRequestDto);
         ClientResponseDto createdClient = clientService.create(clientRequestDto);
         logger.info("Client created successfully: {}", createdClient);
@@ -106,7 +106,7 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_TRAINER')")
     public ResponseEntity<ClientStatusResponseDto> addClientStatus(
             @PathVariable String dni,
-            @RequestBody ClientStatusRequestDto newStatusRequestDto) {
+            @Valid @RequestBody ClientStatusRequestDto newStatusRequestDto) {
 
         ClientStatusResponseDto statusResponseDto = clientService.addClientStatus(dni, newStatusRequestDto);
         return ResponseEntity.ok(statusResponseDto);

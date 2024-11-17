@@ -5,6 +5,7 @@ import ar.gym.gym.dto.response.RoutineResponseDto;
 import ar.gym.gym.dto.response.TrainingPlanResponseDto;
 import ar.gym.gym.model.Routine;
 import ar.gym.gym.service.TrainingPlanService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class TrainingPlanController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_TRAINER')")
-    public ResponseEntity<TrainingPlanResponseDto> createTrainingPlan(@RequestBody TrainingPlanRequestDto trainingPlanRequestDto) {
+    public ResponseEntity<TrainingPlanResponseDto> createTrainingPlan(@Valid  @RequestBody TrainingPlanRequestDto trainingPlanRequestDto) {
         logger.info("Recibiendo solicitud para crear un plan de entrenamiento");
         TrainingPlanResponseDto response = trainingPlanService.create(trainingPlanRequestDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -53,7 +54,7 @@ public class TrainingPlanController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     public ResponseEntity<TrainingPlanResponseDto> updateTrainingPlan(
             @PathVariable Long id,
-            @RequestBody TrainingPlanRequestDto trainingPlanRequestDto) {
+            @Valid @RequestBody TrainingPlanRequestDto trainingPlanRequestDto) {
         logger.info("Recibiendo solicitud para actualizar el plan de entrenamiento con ID: {}", id);
         TrainingPlanResponseDto response = trainingPlanService.update(id, trainingPlanRequestDto);
         return ResponseEntity.ok(response);

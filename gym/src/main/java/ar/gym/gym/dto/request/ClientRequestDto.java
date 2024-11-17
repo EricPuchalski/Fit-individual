@@ -17,14 +17,14 @@ import lombok.NoArgsConstructor;
 public class ClientRequestDto {
     private String name;
     private String lastname;
-    @Pattern(regexp = "^[0-9]{8}$", message = "El DNI debe tener exactamente 8 dígitos")
+    @Pattern(regexp = "^[0-9]{7,8}$", message = "El DNI debe tener entre 7 y 8 dígitos")
     private String dni;
     private String phone;
     private String address;
     @Email(message = "El correo electrónico debe ser válido")
     private String email;
     private boolean active;
-    private ClientStatus status;
+    private ClientStatusRequestDto status;
     private String goal;
     private String gymName;
     private String trainerDni;
