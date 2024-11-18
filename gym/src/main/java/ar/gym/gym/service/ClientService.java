@@ -28,6 +28,6 @@ public interface ClientService{
     List<ClientStatusResponseDto> findClientStatusesByDni(String dni);
     // Método para agregar un nuevo estado a un cliente por DNI
     ClientStatusResponseDto addClientStatus(String dni, ClientStatusRequestDto newStatusRequestDto);
-    List<NotificationResponseDto> findByDniAndNotificationsSeenFalse(String dni);
-    NotificationResponseDto markNotificationAsSeen(String dni, Long notificationId);
+//    List<NotificationResponseDto> findByDniAndNotificationsSeenFalse(String dni);
+//    NotificationResponseDto markNotificationAsSeen(String dni, Long notificationId);
 }

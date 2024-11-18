@@ -5,27 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ff890f-4515-478b-9216-a36d2f21e1d7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/gym/src/test/java/ar/gym/gym/service/impl/ClientServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/ExerciseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/ExerciseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/GymController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/GymController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/NutritionistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/NutritionistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/RoutineController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/RoutineController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/TrainingDiaryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/TrainingDiaryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/TrainingPlanController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/controller/TrainingPlanController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ClientRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ClientRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ClientStatusRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ClientStatusRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ExerciseRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/ExerciseRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/GymRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/GymRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/NutritionistRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/NutritionistRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/RoutineRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/RoutineRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/SessionRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/SessionRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/SessionToTrainingDiaryRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/SessionToTrainingDiaryRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainerRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainerRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainingDiaryRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainingDiaryRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainingPlanRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/request/TrainingPlanRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/response/TrainerResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/dto/response/TrainerResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/model/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/service/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/service/impl/ClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/ar/gym/gym/service/impl/ClientServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +23,7 @@
         <option value="package-info" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -59,21 +45,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.GymApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.gym [clean,install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.gym [clean,verify].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.gym [clean].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ericp/OneDrive/Escritorio/fitpower-individual/Fit-individual/gym/src/main/java/ar/gym/gym/mapper&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GymApplication.executor": "Run",
+    "Maven.gym [clean,install].executor": "Run",
+    "Maven.gym [clean,verify].executor": "Run",
+    "Maven.gym [clean].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ericp/OneDrive/Escritorio/fitpower-individual/Fit-individual/gym/src/main/java/ar/gym/gym/mapper"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ericp\OneDrive\Escritorio\fitpower-individual\Fit-individual\gym\src\main\java\ar\gym\gym\mapper" />
@@ -81,6 +69,13 @@
       <recent name="C:\Users\ericp\OneDrive\Escritorio\fitpower-individual\Fit-individual\gym\src\main\java\ar\gym\gym\service\impl" />
       <recent name="C:\Users\ericp\OneDrive\Escritorio\fitpower-individual\Fit-individual\gym\src\main\java\ar\gym\gym\service" />
       <recent name="C:\Users\ericp\OneDrive\Escritorio\fitpower-individual\Fit-individual\gym\src\main\java\ar\gym\gym\repository" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="ar.gym.gym.service.impl" />
+      <recent name="ar.gym.gym.controller" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ar.gym.gym.repository" />
@@ -97,16 +92,42 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.GymApplication">
-    <configuration name="GymApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ar.gym.gym.GymApplication" />
+  <component name="RunManager" selected="JUnit.ar.gym.gym.service.impl in gym">
+    <configuration name="All in FitPowerPruebas-back" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FitPowerPruebas-back" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in gym (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gym" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in gym" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gym" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gym" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ar.gym.gym.*" />
+          <option name="PATTERN" value="ar.gym.gym.service.impl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ar.gym.gym.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="ar.gym.gym.service.impl.ClientServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -127,8 +148,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GymApplication" />
         <item itemvalue="JUnit.ar.gym.gym.service.impl in gym" />
+        <item itemvalue="JUnit.All in gym (1)" />
+        <item itemvalue="JUnit.All in gym" />
+        <item itemvalue="JUnit.All in FitPowerPruebas-back" />
+        <item itemvalue="JUnit.ClientServiceImplTest" />
       </list>
     </recent_temporary>
   </component>
@@ -153,5 +177,13 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_FitPowerPruebas_back__5_.ic" NAME="All in FitPowerPruebas-back (5) Coverage Results" MODIFIED="1731890302818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_FitPowerPruebas_back__1_.ic" NAME="All in FitPowerPruebas-back (1) Coverage Results" MODIFIED="1731890175404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_FitPowerPruebas_back__3_.ic" NAME="All in FitPowerPruebas-back (3) Coverage Results" MODIFIED="1731890269892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_gym.ic" NAME="All in gym Coverage Results" MODIFIED="1731890490262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_FitPowerPruebas_back__2_.ic" NAME="All in FitPowerPruebas-back (2) Coverage Results" MODIFIED="1731890251060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Fit_individual$All_in_gym__1_.ic" NAME="All in gym (1) Coverage Results" MODIFIED="1731890581875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
